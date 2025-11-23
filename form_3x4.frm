@@ -37,7 +37,7 @@ Private Sub CommandButton1_Click()
         Jumlah = 8
     ElseIf OptionButton3.Value = True Then
         Jumlah = 12
-    ElseIf OptionButton3.Value = True Then
+    ElseIf OptionButton4.Value = True Then
         Jumlah = 16
     End If
         
@@ -52,4 +52,3 @@ Private Sub CommandButton2_Click()
     Unload Me
     
 End Sub
-
