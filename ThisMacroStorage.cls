@@ -106,8 +106,8 @@ Private Sub Tiga_Empat(Jumlah As Integer)
     ActiveDocument.Unit = cdrMillimeter
     ActiveDocument.ReferencePoint = cdrCenter
     
-    Dim Offset As Integer
-    Dim H_Offset As Integer
+    Dim Offset As Double
+    Dim H_Offset As Double
     Offset = Var(1).SizeWidth + 2
     H_Offset = Var(1).SizeHeight + 2
     
@@ -124,6 +124,50 @@ Private Sub Tiga_Empat(Jumlah As Integer)
     Set Varall = ActiveSelection.Group
     
     Varall.AlignAndDistribute 3, 3, 2, 0, False, 2
+    
+    If Jumlah >= 8 Then
+        
+        Dim Varall8 As Shape
+        Set Varall8 = Varall.Duplicate
+        
+        Varall8.Move 0, H_Offset
+        
+        If Jumlah = 8 Then
+        
+            ActiveDocument.ClearSelection
+            ActiveDocument.AddToSelection Varall, Varall8
+        
+        ElseIf Jumlah >= 12 Then
+        
+            Dim Varall12 As Shape
+            Set Varall12 = Varall.Duplicate
+        
+            Varall12.Move 0, (H_Offset * 2)
+            
+            If Jumlah = 12 Then
+            
+                ActiveDocument.ClearSelection
+                ActiveDocument.AddToSelection Varall, Varall8, Varall12
+            
+            ElseIf Jumlah = 16 Then
+            
+                Dim Varall16 As Shape
+                Set Varall16 = Varall.Duplicate
+
+                Varall16.Move 0, (H_Offset * 3)
+
+                ActiveDocument.ClearSelection
+                ActiveDocument.AddToSelection Varall, Varall8, Varall12, Varall16
+                
+            End If
+        End If
+        
+        Dim Varfixall As Shape
+        Set Varfixall = ActiveSelection.Group
+        
+        Varfixall.AlignAndDistribute 3, 3, 2, 0, False, 2
+        
+    End If
 End Sub
 
 Private Sub Empat_Enam(Jumlah As Integer)
