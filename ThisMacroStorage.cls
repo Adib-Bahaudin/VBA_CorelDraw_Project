@@ -28,8 +28,9 @@ Private Sub copi_code()
     Set Var3 = Var1.Duplicate
     Set Var4 = Var1.Duplicate
     
-    ActiveDocument.Unit = cdrMillimeter         ' merubah satuan menjadi mm
-    ActiveDocument.ReferencePoint = cdrCenter   ' fokus objek berada di center
+    ActiveDocument.Unit = cdrMillimeter             ' merubah satuan menjadi mm
+    ActiveDocument.ReferencePoint = cdrCenter       ' fokus objek berada di center
+    ActiveDocument.MasterPage.SetSize 148#, 210#    ' Merubah ukuran lembar kerja
     
     ' menyusun objek
     Offset = Var1.SizeWidth + 2
@@ -95,10 +96,118 @@ Sub Cetak_Pas_Foto()
             Exit Sub
         End If
         
-        ' Call Tiga_Empat(Ti.Jumlah)
+        Call Dua_Tiga(Ti.Jumlah)
         
     Else
         MsgBox "Ukuran Pas Foto Tidak Valid.", vbExclamation
+    End If
+End Sub
+
+Private Sub Dua_Tiga(Jumlah As Integer)
+
+    Dim Var() As Shape
+    Dim i As Integer
+    
+    ReDim Var(1 To 6)
+    
+    Set Var(1) = ActiveShape
+    
+    For i = 2 To 6
+        Set Var(i) = Var(1).Duplicate
+    Next i
+    
+    ActiveDocument.Unit = cdrMillimeter
+    ActiveDocument.ReferencePoint = cdrCenter
+    
+    Dim Offset As Double
+    Dim H_Offset As Double
+    Offset = Var(1).SizeWidth + 2
+    H_Offset = Var(1).SizeHeight + 2
+    
+    If Jumlah >= 6 Then
+        Var(2).Move Offset, 0
+        Var(3).Move (Offset * 2), 0
+        Var(4).Move (Offset * 3), 0
+        Var(5).Move (Offset * 4), 0
+        Var(6).Move (Offset * 5), 0
+    End If
+    
+    ActiveDocument.ClearSelection
+    ActiveDocument.AddToSelection Var()
+    
+    Dim Varall As Shape
+    Set Varall = ActiveSelection.Group
+    
+    Varall.AlignAndDistribute 3, 3, 2, 0, False, 2
+    
+    If Jumlah >= 12 Then
+    
+        Dim Var12 As Shape
+        Set Var12 = Varall.Duplicate
+        
+        Var12.Move 0, H_Offset
+        
+        If Jumlah = 12 Then
+            
+            ActiveDocument.ClearSelection
+            ActiveDocument.AddToSelection Varall, Var12
+            
+        ElseIf Jumlah >= 18 Then
+            
+            Dim Var18 As Shape
+            Set Var18 = Varall.Duplicate
+            
+            Var18.Move 0, (H_Offset * 2)
+            
+            If Jumlah = 18 Then
+            
+                ActiveDocument.ClearSelection
+                ActiveDocument.AddToSelection Varall, Var12, Var18
+            
+            ElseIf Jumlah >= 24 Then
+                
+                Dim Var24 As Shape
+                Set Var24 = Varall.Duplicate
+                
+                Var24.Move 0, (H_Offset * 3)
+                
+                If Jumlah = 24 Then
+                
+                    ActiveDocument.ClearSelection
+                    ActiveDocument.AddToSelection Varall, Var12, Var18, Var24
+                    
+                ElseIf Jumlah >= 30 Then
+                
+                    Dim Var30 As Shape
+                    Set Var30 = Varall.Duplicate
+                
+                    Var30.Move 0, (H_Offset * 4)
+                    
+                    If Jumlah = 30 Then
+                    
+                        ActiveDocument.ClearSelection
+                        ActiveDocument.AddToSelection Varall, Var12, Var18, Var24, Var30
+                    
+                    ElseIf Jumlah = 36 Then
+                    
+                        Dim Var36 As Shape
+                        Set Var36 = Varall.Duplicate
+                
+                        Var36.Move 0, (H_Offset * 5)
+                        
+                        ActiveDocument.ClearSelection
+                        ActiveDocument.AddToSelection Varall, Var12, Var18, Var24, Var30, Var36
+                        
+                    End If
+                End If
+            End If
+        End If
+    
+    Dim Varfixall As Shape
+    Set Varfixall = ActiveSelection.Group
+    
+    Varfixall.AlignAndDistribute 3, 3, 2, 0, False, 2
+    
     End If
 End Sub
 
@@ -252,4 +361,3 @@ Private Sub Empat_Enam(Jumlah As Integer)
         
     End If
 End Sub
-
